@@ -183,7 +183,11 @@
 .wiki-content a {
   color: #C1121F;
   text-decoration: none;
-  pointer-events: none; /* internal wiki links shouldn't navigate */
+  cursor: pointer;
+}
+.wiki-content a:hover {
+  text-decoration: underline;
+  opacity: 0.85;
 }
 .wiki-content ul,
 .wiki-content ol {

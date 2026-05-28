@@ -17,15 +17,16 @@ import { EvidenceScore } from "@/components/ui/EvidenceScore";
 import { cn } from "@/lib/utils";
 
 const FALLBACK_IMAGES = [
-  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80",
-  "https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?w=600&q=80",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
-  "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&q=80",
-  "https://images.unsplash.com/photo-1532094349884-543559a8b937?w=600&q=80",
-  "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80",
+  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&q=80",  // earth from space — UFO/cosmic
+  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80",  // binary matrix code — surveillance/gov
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",  // dark mountain peaks — unexplained
+  "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",  // circuit board — science/tech
+  "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=600&q=80",  // starry night sky — astronomical
+  "https://images.unsplash.com/photo-1532094349884-543559a8b937?w=600&q=80",  // science laboratory — research
+  "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80",  // dark library stacks — historical/archives
+  "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80",  // city at night — urban legends
 ];
+
 
 interface CategoryPageProps {
   title: string;

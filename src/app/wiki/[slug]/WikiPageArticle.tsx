@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 
 interface Props {
   wikiTitle: string;
-  fallback: string;
 }
 
-export function WikiArticle({ wikiTitle, fallback }: Props) {
+export function WikiPageArticle({ wikiTitle }: Props) {
   const [html, setHtml] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -31,26 +31,27 @@ export function WikiArticle({ wikiTitle, fallback }: Props) {
         const raw: string | undefined = data?.parse?.text;
         if (!raw || cancelled) return;
 
-        // Rewrite /wiki/... links to internal /wiki/ route
+        // Rewrite internal wiki links to stay on-site
         const rewritten = raw
-          .replace(/href="\/wiki\/([^"]+)"/g, 'href="/wiki/$1"')
+          .replace(
+            /href="\/wiki\/([^"]+)"/g,
+            'href="/wiki/$1"'
+          )
           .replace(/href="\/w\/[^"]*"/g, '#');
 
-        // Strip reference/appendix sections and everything after
+        // Strip reference/appendix sections
         const SKIP = [
           "References", "Notes", "Citations", "Bibliography",
           "External links", "See also", "Further reading", "Footnotes", "Sources",
         ].map(s => s.replace(/\s/g, "\\s+")).join("|");
         const stripped = rewritten.replace(
-          new RegExp(
-            `<h2[^>]*>\\s*<span[^>]*>(?:${SKIP})</span>[\\s\\S]*`,
-            "i"
-          ),
+          new RegExp(`<h2[^>]*>\\s*<span[^>]*>(?:${SKIP})</span>[\\s\\S]*`, "i"),
           ""
         );
+
         if (!cancelled) setHtml(stripped);
       } catch {
-        // fallback rendered below
+        if (!cancelled) setError(true);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -62,26 +63,26 @@ export function WikiArticle({ wikiTitle, fallback }: Props) {
 
   if (loading) {
     return (
-      <div className="mb-8 space-y-3">
-        {[1, 2, 3, 4].map(i => (
-          <div key={i} className="h-4 bg-rt-panel/80 rounded animate-pulse" style={{ width: `${85 + (i % 3) * 5}%` }} />
+      <div className="space-y-3 py-4">
+        {[1, 2, 3, 4, 5].map(i => (
+          <div key={i} className="h-4 bg-rt-panel/80 rounded animate-pulse" style={{ width: `${80 + (i % 4) * 5}%` }} />
         ))}
       </div>
     );
   }
 
-  if (html) {
+  if (error || !html) {
     return (
-      <div
-        className="wiki-content mb-8"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <p className="text-rt-muted text-sm py-4">
+        Could not load Wikipedia article for <span className="text-rt-white">{wikiTitle}</span>.
+      </p>
     );
   }
 
   return (
-    <p className="text-rt-white/90 text-base leading-relaxed mb-8">
-      {fallback}
-    </p>
+    <div
+      className="wiki-content"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 }
