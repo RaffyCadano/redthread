@@ -1,26 +1,273 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* RedThread brand colors */
+  --color-rt-bg: #050505;
+  --color-rt-panel: #101010;
+  --color-rt-surface: #151515;
+  --color-rt-red: #C1121F;
+  --color-rt-red-glow: #C1121F40;
+  --color-rt-white: #F5F5F5;
+  --color-rt-muted: #8A8A8A;
+  --color-rt-border: #1e1e1e;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* RedThread — dark-mode only theme */
+:root {
+  --background: #050505;
+  --foreground: #F5F5F5;
+  --card: #101010;
+  --card-foreground: #F5F5F5;
+  --popover: #101010;
+  --popover-foreground: #F5F5F5;
+  --primary: #C1121F;
+  --primary-foreground: #F5F5F5;
+  --secondary: #151515;
+  --secondary-foreground: #F5F5F5;
+  --muted: #151515;
+  --muted-foreground: #8A8A8A;
+  --accent: #1e1e1e;
+  --accent-foreground: #F5F5F5;
+  --destructive: #C1121F;
+  --border: #1e1e1e;
+  --input: #1e1e1e;
+  --ring: #C1121F;
+  --radius: 0.625rem;
+  --chart-1: #C1121F;
+  --chart-2: #8A8A8A;
+  --chart-3: #F5F5F5;
+  --chart-4: #151515;
+  --chart-5: #101010;
+  --sidebar: #101010;
+  --sidebar-foreground: #F5F5F5;
+  --sidebar-primary: #C1121F;
+  --sidebar-primary-foreground: #F5F5F5;
+  --sidebar-accent: #151515;
+  --sidebar-accent-foreground: #F5F5F5;
+  --sidebar-border: #1e1e1e;
+  --sidebar-ring: #C1121F;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background-color: #050505;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #101010;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e1e1e;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #C1121F;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .text-rt-red { color: #C1121F; }
+  .text-rt-white { color: #F5F5F5; }
+  .text-rt-muted { color: #8A8A8A; }
+  .bg-rt-bg { background-color: #050505; }
+  .bg-rt-panel { background-color: #101010; }
+  .bg-rt-surface { background-color: #151515; }
+  .bg-rt-red { background-color: #C1121F; }
+  .border-rt-border { border-color: #1e1e1e; }
+  .border-rt-red { border-color: #C1121F; }
+  .glow-red { box-shadow: 0 0 20px #C1121F40, 0 0 40px #C1121F20; }
+  .glow-red-sm { box-shadow: 0 0 8px #C1121F60; }
+  .text-glow-red { text-shadow: 0 0 20px #C1121F80; }
+  .glass-panel {
+    background: rgba(16, 16, 16, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid #1e1e1e;
+  }
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+}
+
+/* ── Wikipedia article content styles ─────────────────────────────────── */
+.wiki-content {
+  color: #d4d4d4;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+.wiki-content p {
+  margin-bottom: 1rem;
+}
+.wiki-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #1e1e1e;
+}
+.wiki-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e5e5;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.wiki-content h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #d4d4d4;
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+.wiki-content a {
+  color: #C1121F;
+  text-decoration: none;
+  pointer-events: none; /* internal wiki links shouldn't navigate */
+}
+.wiki-content ul,
+.wiki-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.wiki-content ul { list-style-type: disc; }
+.wiki-content ol { list-style-type: decimal; }
+.wiki-content li { margin-bottom: 0.25rem; }
+.wiki-content b,
+.wiki-content strong {
+  color: #f5f5f5;
+  font-weight: 600;
+}
+.wiki-content i,
+.wiki-content em { color: #c4c4c4; }
+.wiki-content blockquote {
+  border-left: 3px solid #C1121F;
+  padding-left: 1rem;
+  color: #8a8a8a;
+  margin: 1rem 0;
+  font-style: italic;
+}
+.wiki-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.8125rem;
+}
+.wiki-content th {
+  background: #151515;
+  color: #f5f5f5;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #1e1e1e;
+  text-align: left;
+}
+.wiki-content td {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #1e1e1e;
+  vertical-align: top;
+}
+.wiki-content tr:nth-child(even) td { background: #0d0d0d; }
+.wiki-content figure,
+.wiki-content .thumb {
+  float: right;
+  clear: right;
+  margin: 0 0 1rem 1.5rem;
+  max-width: 260px;
+}
+.wiki-content figure img,
+.wiki-content .thumb img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #1e1e1e;
+  display: block;
+}
+.wiki-content figcaption,
+.wiki-content .thumbcaption {
+  font-size: 0.75rem;
+  color: #6b6b6b;
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+.wiki-content .infobox,
+.wiki-content .navbox,
+.wiki-content .mbox-small,
+.wiki-content .sistersitebox,
+.wiki-content .noprint,
+.wiki-content .ambox,
+.wiki-content .tmbox,
+.wiki-content .cmbox,
+.wiki-content .ombox,
+.wiki-content .fmbox,
+.wiki-content .imbox,
+.wiki-content table.metadata,
+.wiki-content sup.reference,
+.wiki-content .mw-editsection { display: none; }
+.wiki-content .hatnote {
+  font-size: 0.8125rem;
+  color: #8a8a8a;
+  border-left: 2px solid #1e1e1e;
+  padding-left: 0.75rem;
+  margin-bottom: 1rem;
+  font-style: italic;
 }
