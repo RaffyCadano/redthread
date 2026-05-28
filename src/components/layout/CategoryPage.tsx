@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   TrendingUp, Clock, HelpCircle, Landmark, Building2,
-  FlaskConical, Pyramid, Ghost, XCircle,
+  FlaskConical, Pyramid, Ghost, XCircle, Eye,
   type LucideIcon,
 } from "lucide-react";
 import { type Investigation, getCategoryColor } from "@/lib/investigations";
 
 const ICON_REGISTRY: Record<string, LucideIcon> = {
   TrendingUp, Clock, HelpCircle, Landmark, Building2,
-  FlaskConical, Pyramid, Ghost, XCircle,
+  FlaskConical, Pyramid, Ghost, XCircle, Eye,
 };
 import { EvidenceScore } from "@/components/ui/EvidenceScore";
 import { cn } from "@/lib/utils";
@@ -50,19 +50,19 @@ export function CategoryPage({
   return (
     <div className="min-h-screen bg-rt-bg">
       {/* Page header */}
-      <div className="bg-rt-panel border-b border-rt-border px-10 py-10">
+      <div className="bg-rt-panel border-b border-rt-border px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex items-center gap-4 mb-3"
+          className="flex items-center gap-3 sm:gap-4 mb-3"
         >
-          <div className="w-10 h-10 bg-rt-red/10 border border-rt-red/20 rounded-lg flex items-center justify-center">
-            <Icon size={20} className="text-rt-red" />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 bg-rt-red/10 border border-rt-red/20 rounded-lg flex items-center justify-center shrink-0">
+            <Icon size={18} className="text-rt-red" />
           </div>
-          <div>
-            <h1 className="text-3xl font-bold text-rt-white tracking-tight">{title}</h1>
-            <p className="text-rt-muted text-sm mt-0.5">{subtitle}</p>
+          <div className="min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-rt-white tracking-tight truncate">{title}</h1>
+            <p className="text-rt-muted text-xs sm:text-sm mt-0.5 line-clamp-2">{subtitle}</p>
           </div>
         </motion.div>
 
@@ -71,12 +71,12 @@ export function CategoryPage({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex items-center gap-6 mt-5 pt-5 border-t border-rt-border"
+          className="flex flex-wrap items-center gap-3 sm:gap-6 mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-rt-border"
         >
           <span className="text-rt-muted text-xs">
             <span className="text-rt-white font-semibold">{investigations.length}</span> investigations
           </span>
-          <span className="text-rt-border">·</span>
+          <span className="text-rt-border hidden sm:inline">·</span>
           <span className="text-rt-muted text-xs">
             Avg evidence score:{" "}
             <span className="text-rt-white font-semibold">
@@ -92,7 +92,7 @@ export function CategoryPage({
       </div>
 
       {/* Content */}
-      <div className="px-10 py-10">
+      <div className="px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10">
         {investigations.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -103,7 +103,7 @@ export function CategoryPage({
             <p>{emptyMessage}</p>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {investigations.map((inv, i) => {
               const imageUrl =
                 wikiImages[inv.id] || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
@@ -114,7 +114,7 @@ export function CategoryPage({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: i * 0.06 }}
                   whileHover={{ y: -4 }}
-                  className="group bg-rt-panel rounded-xl overflow-hidden border border-rt-border hover:border-rt-red/40 transition-all duration-300 hover:glow-red cursor-pointer"
+                  className="group relative bg-rt-panel rounded-xl overflow-hidden border border-rt-border hover:border-rt-red/40 transition-all duration-300 hover:glow-red cursor-pointer"
                 >
                   <div className="relative h-44 overflow-hidden">
                     <img

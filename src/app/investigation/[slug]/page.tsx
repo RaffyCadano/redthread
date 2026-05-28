@@ -31,7 +31,16 @@ export default async function InvestigationPage({ params }: PageProps) {
 
   const wiki = await getWikiSummary(inv.wikiTitle);
 
-  const imageUrl = wiki?.thumbnail?.source ?? null;
+  const HERO_FALLBACKS = [
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80",
+    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&q=80",
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80",
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80",
+    "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80",
+    "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1200&q=80",
+  ];
+  const fallbackHero = HERO_FALLBACKS[Math.abs(inv.id.split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % HERO_FALLBACKS.length];
+  const imageUrl = wiki?.thumbnail?.source ?? fallbackHero;
   const wikiUrl = wiki?.content_urls?.desktop?.page ?? null;
 
   const timelineEntries =
@@ -47,14 +56,10 @@ export default async function InvestigationPage({ params }: PageProps) {
     <div className="min-h-screen bg-rt-bg flex flex-col">
       {/* ── Hero (full width) ─────────────────────────────────────────── */}
       <div className="relative h-48 sm:h-64 lg:h-72 overflow-hidden shrink-0">
-        {imageUrl ? (
-          <img src={imageUrl} alt={inv.title} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full bg-rt-panel" />
-        )}
+        <img src={imageUrl} alt={inv.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-rt-bg via-rt-bg/60 to-rt-bg/10" />
         <div className="absolute inset-0 bg-gradient-to-r from-rt-bg/40 to-transparent" />
-        <div className="absolute top-6 left-8">
+        <div className="absolute top-4 left-4 sm:top-6 sm:left-8">
           <BackButton />
         </div>
       </div>
@@ -130,7 +135,7 @@ export default async function InvestigationPage({ params }: PageProps) {
         </aside>
 
         {/* Center: article */}
-        <main className="flex-1 min-w-0 lg:overflow-y-auto px-4 sm:px-6 lg:px-8 pb-12 lg:pb-20 pt-4 lg:pt-16">
+        <main className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 pb-12 lg:pb-20 pt-4 lg:pt-16">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-rt-white leading-tight mb-6 tracking-tight">
             {inv.title}
           </h1>
@@ -138,7 +143,7 @@ export default async function InvestigationPage({ params }: PageProps) {
         </main>
 
         {/* Right: timeline — hidden on mobile */}
-        <aside className="hidden lg:block lg:w-80 xl:w-96 shrink-0 border-l border-rt-border lg:overflow-y-auto pt-4 pb-10 px-4">
+        <aside className="hidden lg:block lg:w-80 xl:w-96 shrink-0 border-l border-rt-border pt-4 pb-10 px-4">
           <InvestigationTimeline entries={timelineEntries} investigationTitle={inv.title} />
         </aside>
 

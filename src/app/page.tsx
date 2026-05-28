@@ -3,6 +3,7 @@ import {
   featuredInvestigation,
   trendingInvestigations,
   latestInvestigations,
+  allInvestigations,
 } from "@/lib/investigations";
 import { getWikiSummary } from "@/lib/wikipedia";
 
@@ -20,6 +21,11 @@ export default async function HomePage() {
     wikiImages[featuredInvestigation.id] = featuredWiki.thumbnail.source;
   }
 
+  const topScored = allInvestigations
+    .slice()
+    .sort((a, b) => b.evidenceScore - a.evidenceScore)
+    .slice(0, 8);
+
   return (
     <ForYouPage
       featured={featuredInvestigation}
@@ -28,6 +34,7 @@ export default async function HomePage() {
       trending={trendingInvestigations}
       latest={latestInvestigations}
       wikiImages={wikiImages}
+      topScored={topScored}
     />
   );
 }

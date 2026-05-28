@@ -231,6 +231,12 @@
   vertical-align: top;
 }
 .wiki-content tr:nth-child(even) td { background: #0d0d0d; }
+/* Make tables scrollable on small screens */
+.wiki-content table {
+  overflow-x: auto;
+  display: block;
+  max-width: 100%;
+}
 .wiki-content figure,
 .wiki-content .thumb {
   float: right;
@@ -255,6 +261,7 @@
 }
 .wiki-content .infobox,
 .wiki-content .navbox,
+.wiki-content .sidebar,
 .wiki-content .mbox-small,
 .wiki-content .sistersitebox,
 .wiki-content .noprint,
@@ -266,7 +273,7 @@
 .wiki-content .imbox,
 .wiki-content table.metadata,
 .wiki-content sup.reference,
-.wiki-content .mw-editsection { display: none; }
+.wiki-content .mw-editsection { display: none !important; }
 .wiki-content .hatnote {
   font-size: 0.8125rem;
   color: #8a8a8a;
@@ -274,4 +281,27 @@
   padding-left: 0.75rem;
   margin-bottom: 1rem;
   font-style: italic;
+}
+/* ── Mobile: un-float images, hide floating sidebars ──────────────────── */
+@media (max-width: 640px) {
+  .wiki-content figure,
+  .wiki-content .thumb {
+    float: none;
+    max-width: 100%;
+    margin: 0 0 1rem 0;
+  }
+  .wiki-content figure img,
+  .wiki-content .thumb img {
+    width: 100%;
+  }
+  /* Hide floated Wikipedia event/sidebar tables (inline style or class) */
+  .wiki-content .floatright,
+  .wiki-content .float-right,
+  .wiki-content .wikitable.floatright,
+  .wiki-content table[style*="float"] {
+    display: none !important;
+  }
+  .wiki-content {
+    font-size: 0.875rem;
+  }
 }

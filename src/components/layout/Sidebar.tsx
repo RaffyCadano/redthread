@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles, TrendingUp, Clock, HelpCircle, Landmark, Building2,
   FlaskConical, Pyramid, Ghost, XCircle, GitBranch, Layers, Map,
-  MessageSquareMore, Search, Menu, X,
+  MessageSquareMore, Search, Menu, X, Eye,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SearchModal } from "./SearchModal";
@@ -16,13 +16,14 @@ const navSections = [
   { label: "For You",          href: "/",            icon: Sparkles },
   { label: "Trending",         href: "/trending",    icon: TrendingUp },
   { label: "Latest",           href: "/latest",      icon: Clock },
+  { label: "UFO",              href: "/ufo",         icon: Eye },
   { label: "Unexplained",      href: "/unexplained", icon: HelpCircle },
   { label: "Historical",       href: "/historical",  icon: Landmark },
   { label: "Government",       href: "/government",  icon: Building2 },
   { label: "Science",          href: "/science",     icon: FlaskConical },
   { label: "Ancient Mysteries",href: "/ancient",     icon: Pyramid },
   { label: "Urban Legends",    href: "/urban",       icon: Ghost },
-  { label: "Debunked Myths",   href: "/debunked",    icon: XCircle },
+  { label: "Debunked",         href: "/debunked",    icon: XCircle },
 ];
 
 const toolSections = [

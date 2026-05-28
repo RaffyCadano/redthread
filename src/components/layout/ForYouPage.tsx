@@ -8,10 +8,22 @@ import {
   AlertTriangle, FileText, Eye, Building2, Microscope, RefreshCw,
   HelpCircle, Landmark, FlaskConical, Pyramid, Ghost, XCircle,
   GitBranch, Layers, Map, MessageSquareMore, ChevronRight,
+  ShieldAlert, Shuffle, BarChart2, Zap,
 } from "lucide-react";
 import { type Investigation, getCategoryColor, getEvidenceLabel, timelineEvents, allInvestigations } from "@/lib/investigations";
 import { EvidenceScore } from "@/components/ui/EvidenceScore";
 import { cn } from "@/lib/utils";
+
+const CATEGORY_NAV_GRID = [
+  { label: "UFO",               href: "/ufo",         icon: Eye,          cat: "UFO",               color: "bg-violet-500/10 text-violet-400 border border-violet-500/20" },
+  { label: "Government",        href: "/government",  icon: Building2,    cat: "Government",         color: "bg-blue-500/10 text-blue-400 border border-blue-500/20" },
+  { label: "Unexplained",       href: "/unexplained", icon: HelpCircle,   cat: "Unexplained",        color: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" },
+  { label: "Ancient Mysteries", href: "/ancient",     icon: Pyramid,      cat: "Ancient Mysteries",  color: "bg-amber-500/10 text-amber-400 border border-amber-500/20" },
+  { label: "Historical",        href: "/historical",  icon: Landmark,     cat: "Historical",         color: "bg-orange-500/10 text-orange-400 border border-orange-500/20" },
+  { label: "Science",           href: "/science",     icon: FlaskConical, cat: "Science",            color: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" },
+  { label: "Urban Legends",     href: "/urban",       icon: Ghost,        cat: "Urban Legends",      color: "bg-pink-500/10 text-pink-400 border border-pink-500/20" },
+  { label: "Debunked",          href: "/debunked",    icon: XCircle,      cat: "Debunked",           color: "bg-zinc-500/10 text-zinc-400 border border-zinc-500/20" },
+];
 
 const FALLBACK_IMAGES = [
   "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&q=80",  // earth from space — UFO/cosmic
@@ -31,6 +43,7 @@ interface ForYouPageProps {
   trending: Investigation[];
   latest: Investigation[];
   wikiImages: Record<string, string>;
+  topScored?: Investigation[];
 }
 
 export function ForYouPage({
@@ -40,6 +53,7 @@ export function ForYouPage({
   trending,
   latest,
   wikiImages,
+  topScored,
 }: ForYouPageProps) {
   const { label: evidenceLabel, color: evidenceColor } = getEvidenceLabel(featured.evidenceScore);
 
@@ -64,7 +78,7 @@ export function ForYouPage({
           </div>
           <div className="hidden sm:flex items-center gap-5 text-xs text-rt-muted">
             <span>
-              <span className="text-rt-white font-semibold">{trending.length + latest.length}</span> investigations
+              <span className="text-rt-white font-semibold">{allInvestigations.length}</span> investigations
             </span>
             <span className="text-rt-border">·</span>
             <span className="flex items-center gap-1.5">
@@ -76,10 +90,10 @@ export function ForYouPage({
       </div>
 
       {/* ── Body ─────────────────────────────────────────────────────── */}
-      <div className="flex flex-col xl:flex-row flex-1 xl:min-h-0 xl:overflow-hidden">
+      <div className="flex flex-col xl:flex-row flex-1">
 
         {/* ── Center: Main content ──────────────────────────────────── */}
-        <main className="flex-1 xl:overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10 min-w-0">
+        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10 min-w-0">
           {/* Featured */}
           <section>
             <SectionHeader icon={<Star size={14} />} label="Featured Investigation" />
@@ -111,7 +125,7 @@ export function ForYouPage({
                       )}
                       <span className="text-[10px] font-semibold tracking-widest uppercase px-2 py-0.5 bg-rt-red/10 text-rt-red border border-rt-red/20 rounded">Featured</span>
                     </div>
-                    <h2 className="text-2xl font-bold text-rt-white mb-2 leading-tight group-hover:text-rt-red transition-colors">{featured.title}</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-rt-white mb-2 leading-tight group-hover:text-rt-red transition-colors line-clamp-2">{featured.title}</h2>
                     <p className="text-rt-muted text-sm leading-relaxed line-clamp-2 mb-4">{featuredExtract || featured.description}</p>
                     <div className="flex items-center gap-4">
                       <EvidenceScore score={featured.evidenceScore} size="sm" animated showLabel />
@@ -155,6 +169,54 @@ export function ForYouPage({
               ))}
             </div>
           </section>
+
+          {/* Browse by Category */}
+          <section>
+            <SectionHeader icon={<BarChart2 size={14} />} label="Browse by Category" />
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4">
+              {CATEGORY_NAV_GRID.map(({ label, href, icon: Icon, cat, color }, i) => {
+                const count = allInvestigations.filter(inv => inv.category === cat).length;
+                return (
+                  <Link key={href} href={href}>
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: i * 0.05 }}
+                      className={cn(
+                        "group relative flex flex-col items-start gap-1.5 rounded-xl border bg-rt-panel p-3.5 hover:border-rt-red/50 transition-all duration-300 cursor-pointer overflow-hidden",
+                        "border-rt-border hover:bg-rt-surface"
+                      )}
+                    >
+                      <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center mb-1", color)}>
+                        <Icon size={15} />
+                      </div>
+                      <span className="text-rt-white text-xs font-semibold leading-tight">{label}</span>
+                      <span className="text-rt-muted text-[10px] font-mono">{count} investigations</span>
+                      <ChevronRight size={11} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-rt-border group-hover:text-rt-red group-hover:translate-x-0.5 transition-all" />
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-rt-red scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                    </motion.div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Highest Confidence */}
+          <section>
+            <SectionHeader icon={<ShieldAlert size={14} />} label="Highest Evidence Score" />
+            <div className="mt-4 rounded-xl border border-rt-border bg-rt-panel overflow-hidden">
+              {(topScored ?? allInvestigations.slice().sort((a, b) => b.evidenceScore - a.evidenceScore).slice(0, 8)).map((inv, i) => (
+                <HighConfidenceRow key={inv.id} inv={inv} rank={i + 1} />
+              ))}
+            </div>
+          </section>
+
+          {/* Stats strip */}
+          <section>
+            <SectionHeader icon={<Zap size={14} />} label="By the Numbers" />
+            <StatsStrip />
+          </section>
+
         </main>
 
         {/* ── Right: Historical Thread timeline (hidden on mobile/tablet) ── */}
@@ -298,13 +360,14 @@ function TrendingListCard({
         initial={{ opacity: 0, x: -16 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.35, delay: index * 0.07 }}
-        className="group flex gap-3 bg-rt-panel rounded-xl border border-rt-border hover:border-rt-red/40 transition-all duration-300 overflow-hidden cursor-pointer"
+        className="group relative flex gap-3 bg-rt-panel rounded-xl border border-rt-border hover:border-rt-red/40 transition-all duration-300 overflow-hidden cursor-pointer"
       >
-        <div className="relative w-20 shrink-0 overflow-hidden">
+        <div className="relative w-20 shrink-0 overflow-hidden bg-rt-surface">
           <img
             src={imageUrl}
-            alt={inv.title}
+            alt=""
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-rt-panel/20" />
         </div>
@@ -325,7 +388,7 @@ function TrendingListCard({
           <h3 className="text-rt-white font-semibold text-xs leading-snug mb-1.5 group-hover:text-rt-red transition-colors line-clamp-2">
             {inv.title}
           </h3>
-          <EvidenceScore score={inv.evidenceScore} size="sm" animated />
+          <EvidenceScore score={inv.evidenceScore} size="sm" animated showLabel={false} />
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-rt-red scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
       </motion.article>
@@ -351,11 +414,12 @@ function LatestCard({
       whileHover={{ y: -3 }}
       className="group relative bg-rt-panel rounded-xl overflow-hidden border border-rt-border hover:border-rt-red/40 transition-all duration-300 cursor-pointer"
     >
-      <div className="relative h-32 overflow-hidden">
+      <div className="relative h-32 overflow-hidden bg-rt-surface">
         <img
           src={imageUrl}
-          alt={inv.title}
+          alt=""
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-rt-panel via-rt-panel/30 to-transparent" />
         <div className="absolute top-2 left-2">
@@ -378,6 +442,74 @@ function LatestCard({
       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-rt-red scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
     </motion.article>
     </Link>
+  );
+}
+
+/** Ranked row for Highest Evidence section */
+function HighConfidenceRow({ inv, rank }: { inv: Investigation; rank: number }) {
+  const { label: evidenceLabel, color: evidenceColor } = getEvidenceLabel(inv.evidenceScore);
+  return (
+    <Link href={`/investigation/${inv.slug}`} className="block">
+      <div className="group flex items-center gap-3 px-4 py-2.5 border-b border-rt-border/50 last:border-0 hover:bg-rt-surface transition-colors cursor-pointer">
+        <span className="text-[11px] font-mono text-rt-border w-5 shrink-0 text-right">{rank}</span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className={cn("text-[8px] font-semibold tracking-widest uppercase px-1.5 py-0.5 rounded border", getCategoryColor(inv.category))}>
+              {inv.category}
+            </span>
+            {inv.year && <span className="text-[9px] text-rt-muted font-mono">{inv.year}</span>}
+          </div>
+          <p className="text-rt-white text-xs font-medium leading-snug group-hover:text-rt-red transition-colors truncate">{inv.title}</p>
+        </div>
+        <div className="shrink-0 flex items-center gap-2">
+          <span className={cn("text-xs font-bold tabular-nums", evidenceColor)}>{inv.evidenceScore}</span>
+          <div className="w-12 h-1 rounded-full bg-rt-surface overflow-hidden">
+            <div
+              className={cn("h-full rounded-full transition-all", inv.evidenceScore >= 85 ? "bg-rt-red" : inv.evidenceScore >= 60 ? "bg-amber-500" : "bg-zinc-500")}
+              style={{ width: `${inv.evidenceScore}%` }}
+            />
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/** Stats strip */
+function StatsStrip() {
+  const total = allInvestigations.length;
+  const categories = [...new Set(allInvestigations.map(i => i.category))].length;
+  const highEvidence = allInvestigations.filter(i => i.evidenceScore >= 85).length;
+  const debunked = allInvestigations.filter(i => i.category === "Debunked").length;
+  const avgScore = Math.round(allInvestigations.reduce((s, i) => s + i.evidenceScore, 0) / total);
+
+  const stats = [
+    { label: "Investigations", value: total, sub: "and counting" },
+    { label: "Categories", value: categories, sub: "topic areas" },
+    { label: "High Evidence", value: highEvidence, sub: "score ≥ 85" },
+    { label: "Debunked", value: debunked, sub: "confirmed false" },
+    { label: "Avg. Evidence", value: `${avgScore}`, sub: "out of 100" },
+  ];
+
+  return (
+    <div className="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-2">
+      {stats.map(({ label, value, sub }, i) => (
+        <motion.div
+          key={label}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: i * 0.06 }}
+          className={cn(
+            "rounded-xl border border-rt-border bg-rt-panel px-4 py-3 flex flex-col",
+            i === stats.length - 1 && stats.length % 2 !== 0 && "col-span-2 sm:col-span-1"
+          )}
+        >
+          <span className="text-2xl font-bold text-rt-white tabular-nums">{value}</span>
+          <span className="text-[10px] font-semibold text-rt-white/80 mt-0.5">{label}</span>
+          <span className="text-[9px] text-rt-muted mt-0.5">{sub}</span>
+        </motion.div>
+      ))}
+    </div>
   );
 }
 

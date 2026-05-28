@@ -24,7 +24,16 @@ export default async function WikiPage({ params }: PageProps) {
     getWikiRelated(decoded),
   ]);
 
-  const imageUrl = wiki?.thumbnail?.source ?? null;
+  const FALLBACK_IMAGES = [
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80",
+    "https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?w=1200&q=80",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80",
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80",
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80",
+    "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=1200&q=80",
+  ];
+  const fallback = FALLBACK_IMAGES[Math.abs(decoded.split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % FALLBACK_IMAGES.length];
+  const imageUrl = wiki?.thumbnail?.source ?? fallback;
   const description = wiki?.description ?? null;
   const wikiUrl = wiki?.content_urls?.desktop?.page ?? `https://en.wikipedia.org/wiki/${slug}`;
 
@@ -32,14 +41,10 @@ export default async function WikiPage({ params }: PageProps) {
     <div className="min-h-screen bg-rt-bg flex flex-col">
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <div className="relative h-48 sm:h-64 lg:h-72 overflow-hidden shrink-0">
-        {imageUrl ? (
-          <img src={imageUrl} alt={displayTitle} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full bg-rt-panel" />
-        )}
+        <img src={imageUrl} alt={displayTitle} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-rt-bg via-rt-bg/60 to-rt-bg/10" />
         <div className="absolute inset-0 bg-gradient-to-r from-rt-bg/40 to-transparent" />
-        <div className="absolute top-6 left-8">
+        <div className="absolute top-4 left-4 sm:top-6 sm:left-8">
           <BackButton />
         </div>
       </div>
@@ -105,7 +110,7 @@ export default async function WikiPage({ params }: PageProps) {
         </aside>
 
         {/* ── Center: article ───────────────────────────────────────── */}
-        <main className="flex-1 min-w-0 lg:overflow-y-auto px-4 sm:px-6 lg:px-8 pb-12 lg:pb-20 pt-4 lg:pt-16">
+        <main className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 pb-12 lg:pb-20 pt-4 lg:pt-16">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-rt-white leading-tight mb-6 tracking-tight">
             {displayTitle}
           </h1>
