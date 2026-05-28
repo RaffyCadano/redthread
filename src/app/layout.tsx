@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   title: "RedThread — Follow the Connections",
   description:
     "A cinematic mystery investigation platform powered by real historical information and interactive evidence exploration.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

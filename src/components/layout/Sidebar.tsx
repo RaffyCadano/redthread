@@ -56,10 +56,7 @@ export function Sidebar() {
       {/* Logo */}
       <Link href="/" onClick={close} className="flex items-center gap-3 px-5 py-5 border-b border-rt-border group">
         <div className="relative">
-          <div className="w-8 h-8 bg-rt-red rounded-sm flex items-center justify-center glow-red-sm group-hover:glow-red transition-all duration-300">
-            <span className="text-white font-bold text-sm leading-none">RT</span>
-          </div>
-          <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-rt-red rounded-full animate-pulse" />
+          <img src="/logo.png" alt="RedThread" className="w-8 h-8 rounded-sm object-contain" />
         </div>
         <div>
           <span className="text-rt-white font-bold text-lg tracking-tight">RedThread</span>
@@ -155,9 +152,7 @@ export function Sidebar() {
     <>      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />      {/* ── Mobile top bar ─────────────────────────────────────────── */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-rt-panel border-b border-rt-border z-40 flex items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-rt-red rounded-sm flex items-center justify-center">
-            <span className="text-white font-bold text-xs leading-none">RT</span>
-          </div>
+          <img src="/logo.png" alt="RedThread" className="w-7 h-7 rounded-sm object-contain" />
           <span className="text-rt-white font-bold text-base tracking-tight">RedThread</span>
         </Link>
         <button
